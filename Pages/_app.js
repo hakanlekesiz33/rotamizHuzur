@@ -1,11 +1,10 @@
 import React from 'react'
-import Link from 'next/link';
 import App, { Container } from 'next/app'
 import { Provider } from 'react-redux';
 
 import withRedux from 'next-redux-wrapper';
-import initsStore from '../app/store';
-import Layout from '../app/components/Layout';
+import initsStore from '../store/store';
+import Layout from '../components/Layout';
 
 import { fetchRandomCard } from '../app/actions/cardsActions';
 

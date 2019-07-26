@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../styles/index.scss'
 import Link from 'next/link';
 import { connect } from 'react-redux';
-import initsStore from '../app/store';
+import initsStore from '../store/store';
 
 class Index extends Component {
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../styles/index.scss'
 
 import { connect } from 'react-redux';
-import initsStore from '../app/store';
+import initsStore from '../store/store';
 
 class Search extends Component {
 
