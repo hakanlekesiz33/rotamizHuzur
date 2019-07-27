@@ -1,7 +1,6 @@
 import fetch from 'node-fetch';
 import * as actionTypes from './actionTypes';
 
-
 export const searchRequest = () => ({ type: actionTypes.SEARCH_REQUEST });
 export const searchSuccess = results => ({ type: actionTypes.SEARCH_SUCCESS, results });
 export const searchError = errors => ({ type: actionTypes.SEARCH_ERROR, errors });
@@ -28,7 +27,7 @@ export const fetchCards = (selectedFormat, searchPhrase) => {
 export const fetchRandomCard = () => {
   return async (dispatch) => {
     dispatch(randomCardRequest());
-    const response = await fetch('https://api.scryfall.com/cards/random');
+    const response = await fetch('http://rotamizhuzur.xyz/Umbraco/Api/Orders/getLayoutItems');
     const json = await response.json();
     if (response.status === 200) {
       return dispatch(randomCardSuccess(json));

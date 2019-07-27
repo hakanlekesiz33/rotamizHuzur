@@ -1,12 +1,11 @@
 import React from 'react'
 import App, { Container } from 'next/app'
 import { Provider } from 'react-redux';
-
 import withRedux from 'next-redux-wrapper';
 import initsStore from '../store/store';
 import Layout from '../components/Layout';
-
-import { fetchRandomCard } from '../app/actions/cardsActions';
+import { fetchRandomCard } from '../store/actions/cardsActions';
+import { fetchLayoutItems } from '../store/actions/layoutItemsActions';
 
 
 class MyApp extends App {
@@ -17,8 +16,8 @@ class MyApp extends App {
     }
     
     if(ctx.req){
-    console.log("app");
     await ctx.store.dispatch(fetchRandomCard());
+    await ctx.store.dispatch(fetchLayoutItems());
     }      
 
     return { pageProps, store }

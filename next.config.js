@@ -1,4 +1,13 @@
-const withSass = require('@zeit/next-sass')
-const withCSS = require('@zeit/next-css')
+const withPlugins = require('next-compose-plugins');
+const withSass = require('@zeit/next-sass');
+const withImages = require('next-images');
 
-module.exports = withCSS(withSass())
+const nextConfig = {
+  exportPathMap: function() {
+    return {
+      '/': { page: '/' },
+    };
+  },
+};
+
+module.exports = withPlugins([withSass, withImages], nextConfig);
