@@ -6,6 +6,7 @@ import initsStore from '../store/store';
 import Layout from '../components/Layout';
 import { fetchRandomCard } from '../store/actions/cardsActions';
 import { fetchLayoutItems } from '../store/actions/layoutItemsActions';
+import '../styles/Common.scss';
 
 
 class MyApp extends App {
@@ -13,6 +14,7 @@ class MyApp extends App {
     let pageProps = {}
     if (Component.getInitialProps) {
       pageProps = await Component.getInitialProps(ctx)
+     
     }
     
     if(ctx.req){

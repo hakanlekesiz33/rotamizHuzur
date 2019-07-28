@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Toolbar from '../Navigation/Toolbar';
 import Footer from '../Navigation/Footer';
 
+
 class Layout extends Component {
 
   render() {

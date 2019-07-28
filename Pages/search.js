@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import '../styles/index.scss'
-
 import { connect } from 'react-redux';
 import initsStore from '../store/store';
 
@@ -19,7 +17,7 @@ class Search extends Component {
 
     return(
 
-      <div className="ahmet">
+      <div className="search">
          {card.name }
       </div>
       
