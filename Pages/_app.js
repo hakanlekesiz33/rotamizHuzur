@@ -40,4 +40,3 @@ class MyApp extends App {
   }
 }
 export default withRedux(initsStore)(MyApp);
-                  
