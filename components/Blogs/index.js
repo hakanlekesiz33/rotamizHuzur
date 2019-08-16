@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 
 const BlogLink = props => (
-        <Link href="/[blogSlug]" as={`/${props.blogSlug}`}>
+        <Link href="/[blogSlug]?id=1" as={`/${props.blogSlug}`}>
             <a className="citem01-A">
                 {props.blogLinkName}
             </a>

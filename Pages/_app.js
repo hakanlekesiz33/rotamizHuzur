@@ -21,7 +21,6 @@ class MyApp extends App {
     await ctx.store.dispatch(fetchRandomCard());
     await ctx.store.dispatch(fetchLayoutItems());
     }      
-
     return { pageProps, store }
   }
 
