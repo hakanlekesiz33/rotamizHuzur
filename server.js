@@ -1,13 +1,17 @@
-const express = require('express')
-const next = require('next')
-const Router = require('./routes')
- 
-const app = next({ dev: process.env.NODE_ENV !== 'production' })
-const server = express()
-const handle = Router.getRequestHandler(app)
- 
-app.prepare()
-  .then(() => {
-    server.get('*', (req, res) => handle(req, res))
-    server.listen(3001)
-  })
+const next = require("next")
+var helmet = require('helmet')
+const routes = require("./routes")
+const PORT = parseInt(process.env.PORT, 10) || 3001
+
+const app = next({ dev: process.env.NODE_ENV !== "production" })
+const handler = routes.getRequestHandler(app)
+
+// With express
+const express = require("express")
+
+app.prepare().then(() => {
+  express()
+    .use(handler)
+    .use(helmet())
+    .listen(PORT, () => process.stdout.write(`Point your browser to: http://localhost:${PORT}\n`))
+})

@@ -2,8 +2,8 @@ import React from 'react'
 import App, { Container } from 'next/app'
 import { Provider } from 'react-redux';
 import withRedux from 'next-redux-wrapper';
-import initsStore from '../store/store';
 import Layout from '../components/Layout';
+import initsStore from '../store/store';
 import { fetchRandomCard } from '../store/actions/cardsActions';
 import { fetchLayoutItems } from '../store/actions/layoutItemsActions';
 import '../styles/Common.scss';

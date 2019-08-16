@@ -3,6 +3,17 @@ import { connect } from 'react-redux';
 import initsStore from '../../store/store';
 import Link from 'next/link';
 
+
+const BlogLink = props => (
+        <Link href="/[blogSlug]" as={`/${props.blogSlug}`}>
+            <a className="citem01-A">
+                {props.blogLinkName}
+            </a>
+        </Link>
+);
+
+
+
 class Blogs extends Component {
 
 
@@ -19,19 +30,14 @@ class Blogs extends Component {
         }
         return (
             <div className='blogs'>
-                
+
                 {blogsArray.map(item => {
                     if (item.config.IsShowHomePage) {
                         return (
 
                             <div key={item.id} className='citem'>
                                 <div className='citem01'>
-
-                                    <Link href={item.config.SeoUrl}>
-                                        <a className="citem01-A">
-                                            {item.config.CategoryName}
-                                        </a>
-                                    </Link>
+                                    <BlogLink blogSlug={item.config.SeoUrl} blogLinkName={item.config.CategoryName} />
                                     <div className='citem01-B'>
                                         {item.config.Date}
                                     </div>

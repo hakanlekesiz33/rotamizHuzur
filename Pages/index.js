@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../styles/index.scss'
+import '../styles/index.scss';
 import { connect } from 'react-redux';
 import initsStore from '../store/store';
 import Blogs from '../components/Blogs';

@@ -7,13 +7,13 @@ class Layout extends Component {
   render() {
 
     return (
-      <React.Fragment>
+      <>
         <Toolbar />
         <main>
           {this.props.children}
         </main>
         <Footer />
-      </React.Fragment>
+      </>
     )
   }
 }
