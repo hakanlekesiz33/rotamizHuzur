@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const logo = () => (
     <div className="logo">
-        <Link href="/search">
+        <Link href="/">
          <a> <img src={logoPath} alt="rotamiz-huzur-logo" /></a> 
         </Link>
     </div>

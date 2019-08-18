@@ -24,7 +24,7 @@ class Categories extends Component {
                     <ul>
                         {categoriesArray.map(item => (
                             <li key={item.id}>
-                                <Link href={item.config.url}>
+                                <Link href={"/kategoriler/"+item.config.url}>
                                     <a className="citem">
                                         {item.config.name}
                                     </a>

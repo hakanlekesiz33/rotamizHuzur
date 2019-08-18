@@ -6,18 +6,25 @@ import Blogs from '../components/Blogs';
 
 class Index extends Component {
 
-  static async getInitialProps({ store }) {
-    this.store = store;
-    return {};
-  }
-
   render() {
+
+    const store = this.props.getState();
+    const blogsArray = [];
+    for (let key in store.layoutItems.blogs) {
+      if (store.layoutItems.blogs[key].IsShowHomePage) {
+        blogsArray.push({
+          id: store.layoutItems.blogs[key].Id,
+          config: store.layoutItems.blogs[key]
+        });
+      }
+
+    }
 
     return (
 
       <div id='mainPage'>
         <div className="gridWrapper">
-          <Blogs />
+          <Blogs blogsArray={blogsArray} />
         </div>
       </div>
 

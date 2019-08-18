@@ -7,6 +7,7 @@ import initsStore from '../store/store';
 import { fetchRandomCard } from '../store/actions/cardsActions';
 import { fetchLayoutItems } from '../store/actions/layoutItemsActions';
 import '../styles/Common.scss';
+import '../styles/Components.scss';
 
 
 class MyApp extends App {
