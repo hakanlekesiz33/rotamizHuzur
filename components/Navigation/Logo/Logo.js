@@ -1,11 +1,10 @@
 import React from 'react';
-import logoPath from '../../../assets/images/logo.png';
 import Link from 'next/link';
 
 const logo = () => (
     <div className="logo">
         <Link href="/">
-         <a> <img src={logoPath} alt="rotamiz-huzur-logo" /></a> 
+         <a> <img src="../../../static/logo.png" alt="rotamiz-huzur-logo" /></a> 
         </Link>
     </div>
 );

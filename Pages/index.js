@@ -3,6 +3,7 @@ import '../styles/index.scss';
 import { connect } from 'react-redux';
 import initsStore from '../store/store';
 import Blogs from '../components/Blogs';
+import Head from 'next/head';
 
 class Index extends Component {
 
@@ -21,12 +22,18 @@ class Index extends Component {
     }
 
     return (
-
-      <div id='mainPage'>
-        <div className="gridWrapper">
-          <Blogs blogsArray={blogsArray} />
+      <>
+        <Head>
+          <title>Rotamız Huzur | Ana Sayfa</title>
+          {/* <meta name="description" content="ana sayfa"></meta> */}
+          {/* <meta name="keywords" content="rotamız huzur, gezi yazıları, gezelim görelim, en iyi gezi deneyimleri"></meta> */}
+        </Head>
+        <div id='mainPage'>
+          <div className="gridWrapper">
+            <Blogs blogsArray={blogsArray} />
+          </div>
         </div>
-      </div>
+      </>
 
     );
   }

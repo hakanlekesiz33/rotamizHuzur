@@ -11,8 +11,10 @@ export default class MyDocument extends Document {
   render() {
     return (
       <html lang="en">
-        <Head>
-
+         <Head>
+          <title>Rotamız Huzur</title>
+          <meta name="description" content="Rotamız Huzur güncel gezilerimizi ve günlük hayattaki deneyimlerimizi anlattığımız"></meta>
+          <meta name="keywords" content="rotamız huzur, gezi yazıları, gezelim görelim, türkiyede gezilecek en iyi yerler, en iyi gezi deneyimleri"></meta>
         </Head>
         <body>
           <Main />

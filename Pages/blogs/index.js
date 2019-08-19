@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Blogs from '../../components/Blogs';
 import ErrorPage from 'next/error';
 import { fetchLayoutItems } from '../../store/actions/layoutItemsActions';
+import Head from 'next/head';
 
 
 class CtgDetail extends Component {
@@ -19,36 +20,41 @@ class CtgDetail extends Component {
         const blogsArray = [];
         let statusCode = 404;
 
-        if(currentCategory.length != 0){
+        if (currentCategory.length != 0) {
             statusCode = 200;
             for (let key in cStore.layoutItems.blogs) {
-                if (cStore.layoutItems.blogs[key].CategoryName==currentCategory[0].name) {
+                if (cStore.layoutItems.blogs[key].CategoryName == currentCategory[0].name) {
                     blogsArray.push({
                         id: cStore.layoutItems.blogs[key].Id,
                         config: cStore.layoutItems.blogs[key]
                     });
                 }
-    
+
             }
         }
 
 
-        return { blogsArray,statusCode };
+        return { blogsArray, statusCode,currentCategory };
     }
 
 
     render() {
-        const {blogsArray, statusCode } = this.props;
+        const { blogsArray, statusCode, currentCategory } = this.props;
         if (statusCode === 404) {
             return <ErrorPage statusCode={statusCode} />
         }
 
         return (
-            <div id='ctgDetail'>
-                <div className="gridWrapper">
-                    <Blogs blogsArray={blogsArray} />
+            <>
+                <Head>
+                    <title>Rotamız Huzur | {currentCategory[0].name}</title>
+                </Head>
+                <div id='ctgDetail'>
+                    <div className="gridWrapper">
+                        <Blogs blogsArray={blogsArray} />
+                    </div>
                 </div>
-            </div>
+            </>
 
         );
     }
