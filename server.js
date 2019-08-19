@@ -12,6 +12,11 @@ app.prepare()
       const actualPage = "/about";
       app.render(req, res, actualPage)
     })
+
+    server.get("/iletisim", (req, res) => {
+      const actualPage = "/contact";
+      app.render(req, res, actualPage)
+    })
     
     server.get('/:slug', (req, res) => {
       return app.render(req, res, '/blog', { slug: req.params.slug })

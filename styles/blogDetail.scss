@@ -54,6 +54,30 @@
             
             }
         }
+
+        .gallery{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-top: 30px;
+
+
+
+                .galleryImg{
+
+                height: 266px;
+                width: 30%;  
+                vertical-align: top;
+                margin: 0 0 40px 0;
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center center;
+                }
+                .galleryImg:hover{
+                    cursor: pointer;
+                }
+
+        }
     }
 
 

@@ -15,6 +15,7 @@
     "@zeit/next-sass": "^1.0.1",
     "axios": "^0.19.0",
     "express": "^4.17.1",
+    "formik": "^1.5.8",
     "html-to-react": "^1.4.1",
     "next": "^9.0.2",
     "next-compose-plugins": "^2.2.0",
@@ -32,6 +33,7 @@
     "react-render-html": "^0.6.0",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "yup": "^0.27.0"
   }
 }
