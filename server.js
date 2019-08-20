@@ -13,8 +13,13 @@ app.prepare()
       app.render(req, res, actualPage)
     })
 
+<<<<<<< HEAD
     server.get("/products", (req, res) => {
       const actualPage = "/about";
+=======
+    server.get("/uruler", (req, res) => {
+      const actualPage = "/uruler";
+>>>>>>> 841549cb8f99e0e23a40dd0804c5853b06b054a6
       app.render(req, res, actualPage)
     })
 
