@@ -12,7 +12,12 @@ app.prepare()
       const actualPage = "/about";
       app.render(req, res, actualPage)
     })
-  
+
+    server.get("/test", (req, res) => {
+      const actualPage = "/test";
+      app.render(req, res, actualPage)
+    })
+
     server.get("/iletisim", (req, res) => {
       const actualPage = "/contact";
       app.render(req, res, actualPage)
