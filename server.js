@@ -13,8 +13,8 @@ app.prepare()
       app.render(req, res, actualPage)
     })
 
-    server.get("/uruler", (req, res) => {
-      const actualPage = "/uruler";
+    server.get("/deneme", (req, res) => {
+      const actualPage = "/deneme";
       app.render(req, res, actualPage)
     })
 
