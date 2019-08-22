@@ -13,11 +13,6 @@ app.prepare()
       app.render(req, res, actualPage)
     })
 
-    server.get("/deneme", (req, res) => {
-      const actualPage = "/deneme";
-      app.render(req, res, actualPage)
-    })
-
     server.get("/iletisim", (req, res) => {
       const actualPage = "/contact";
       app.render(req, res, actualPage)
