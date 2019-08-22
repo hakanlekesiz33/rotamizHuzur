@@ -14,7 +14,7 @@ class Blogs extends Component {
                     return (
                         <div key={item.id} className='citem'>
                             <div className='citem01'>
-                                <Link href={`/blog?slug=${item.config.SeoUrl}`} as={`/${item.config.SeoUrl}`}>
+                                <Link href={"/kategoriler/" + item.config.CtgUrl}>
                                     <a className="citem01-A">
                                         {item.config.CategoryName}
                                     </a>
@@ -26,7 +26,11 @@ class Blogs extends Component {
                             <div className='citem02'>
                                 {item.config.PageTitle}
                             </div>
-                            <img className='citem03' src={item.config.GaleryImgs[0].imgPath} alt={item.config.PageTitle} />
+                            <Link href={`/blog?slug=${item.config.SeoUrl}`} as={`/${item.config.SeoUrl}`}>
+                                <a>
+                                    <img className='citem03' src={item.config.GaleryImgs[0].imgPath} alt={item.config.PageTitle} />
+                                </a>
+                            </Link>
                         </div>
                     );
                 })}
