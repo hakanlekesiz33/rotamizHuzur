@@ -36,7 +36,7 @@ console.log(popularPostsArray)
                             </a>
                         </Link>
 
-                        <Link href={item.config.url}>
+                        <Link href={"/kategoriler/" +item.config.ctgUrl}>
                             <a className="citem03">
                                 <h5> {item.config.ctg}  </h5>
                             </a>
