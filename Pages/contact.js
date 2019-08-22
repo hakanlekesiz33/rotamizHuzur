@@ -2,6 +2,7 @@ import Link from 'next/link'
 import '../styles/contact.scss';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+const axios = require('axios');
 
 const SignupSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -56,11 +57,45 @@ function Contact() {
                                     lastName: '',
                                     email: '',
                                 }}
+
+                               
                                 validationSchema={SignupSchema}
                                 onSubmit={values => {
-                                    // same shape as initial values
-                                    console.log(values);
-                                }}
+                                   
+                                    const user = {
+                                        username:"hakan",
+                                        password:"123456"
+                                    }
+
+                                        axios.post('https://localhost:44329/api/token/token',user
+                                            ).then(function (response) {
+                                                
+                                              return response.data.token;
+
+                                            })
+                                            .then(function(token) {
+
+                                                const headers = {
+                                                    'Content-Type': 'application/json',
+                                                    'Authorization': 'bearer ' + token 
+                                                  }
+                                             
+                                                  
+                                                  debugger;
+                                                axios.post('https://localhost:44329/api/values', values, {
+                                                    headers: headers
+                                                  }).then(function(res){
+                                                    console.log(res)
+
+                                                })
+                                            })
+                                            .catch(function (error) {
+                                                
+                                            console.log(error.config);
+                                        });
+
+                                    }}
+
                             >
                              {({ errors, touched }) => (
                              <Form>
