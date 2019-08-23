@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { Component } from 'react';
 import '../styles/contact.scss';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import ReCAPTCHA from "react-google-recaptcha";
 const axios = require('axios');
 const recaptchaRef = React.createRef();
+
+import { connect } from 'react-redux';
+import initsStore from '../store/store';
+function onChange(values){
+    if (values) {
+        this.setState({...this.state, recaptchaClass: "recaptchaClass" });
+    }
+}
 
 const SignupSchema = Yup.object().shape({
     name: Yup.string()
@@ -54,9 +62,13 @@ class Thumb extends React.Component {
 }
 
 
-function Contact() {
-    return (
-        <div id='contact'>
+class Contact extends Component {
+    state = {
+        recaptchaClass: "recaptchaClass"
+    };
+    render() {
+      return (
+       <div id='contact'>
             <div className="gridWrapper">
                 <div className="row">
                     <div className="topRow">
@@ -92,7 +104,8 @@ function Contact() {
                                 }}
                                 validationSchema={SignupSchema}
                                 onSubmit={values => {
-                                    if(!recaptchaRef.current.getValue()){
+                                    if (!recaptchaRef.current.getValue()) {
+                                        this.setState({...this.state, recaptchaClass: "recaptchaClass error" });
                                         return; //recaptha dolu değilse formu submit etmeyecek
                                     }
                                     const user = {
@@ -135,25 +148,26 @@ function Contact() {
                             >
                                 {({ errors, touched, values, handleSubmit, setFieldValue }) => (
                                     <Form encType="multipart/form-data">
-                                        <Field className="form-control" type="text" placeholder="Your Name" name="name" />
-                                        {errors.firstName && touched.firstName ? (
-                                            <div>{errors.firstName}</div>
-                                        ) : null}
-                                        <Field className="form-control" type="text" placeholder="Your Name" name="email" />
+                                        {errors.name && touched.name ? (
+                                            <Field className="form-control errorName" type="text" placeholder="Your Name" name="name" />
+                                        ) : <Field className="form-control" type="text" placeholder="Your Name" name="name" />}
+
                                         {errors.email && touched.email ? (
-                                            <div>{errors.email}</div>
-                                        ) : null}
+                                            <Field className="form-control errorEmail" type="text" placeholder="Your Name" name="email" />
+                                        ) : <Field className="form-control" type="text" placeholder="Your Name" name="email" />}
                                         <Field component="textarea" className="form-control-lg" rows="5" placeholder="Type Comment" name="message" />
-                                        <label>File upload</label>
+                                        <label>Dosya Yükleyiniz</label>
                                         <input id="file" name="file" type="file" onChange={(event) => {
                                             setFieldValue("file", event.currentTarget.files[0]);
                                         }} className="form-control" />
                                         <Thumb file={values.file} />
-
-                                        <ReCAPTCHA
-                                            ref={recaptchaRef}
-                                            sitekey="6LcAe7QUAAAAALCSJQT6_fHFvYRzFsYrPtxZ5Mph"
-                                        />
+                                        <div className={this.state.recaptchaClass}>
+                                            <ReCAPTCHA
+                                                ref={recaptchaRef}
+                                                onChange={onChange}
+                                                sitekey="6LcAe7QUAAAAALCSJQT6_fHFvYRzFsYrPtxZ5Mph"
+                                            />
+                                        </div>
                                         <button type="submit" className="btn-submit">Send Message</button>
                                     </Form>
                                 )}
@@ -164,7 +178,8 @@ function Contact() {
                 </div>
             </div>
         </div>
-    )
-}
-
-export default Contact
+      );
+    }
+  }
+  
+  export default connect(initsStore)(Contact);
