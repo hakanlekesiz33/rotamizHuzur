@@ -8,11 +8,7 @@ const recaptchaRef = React.createRef();
 
 import { connect } from 'react-redux';
 import initsStore from '../store/store';
-function onChange(values){
-    if (values) {
-        this.setState({...this.state, recaptchaClass: "recaptchaClass" });
-    }
-}
+
 
 const SignupSchema = Yup.object().shape({
     name: Yup.string()
@@ -63,9 +59,27 @@ class Thumb extends React.Component {
 
 
 class Contact extends Component {
-    state = {
-        recaptchaClass: "recaptchaClass"
-    };
+
+    constructor() {
+        super();
+  
+        state = {
+            recaptchaClass: "recaptchaClass"
+        };
+  
+     };
+
+ 
+   
+    onChange =  values => {
+        if (values) {
+            console.log("onchange .......");
+            this.setState({...this.state, recaptchaClass: "recaptchaClass" });
+            console.log(this.state);
+
+        }
+    }
+
     render() {
       return (
        <div id='contact'>
@@ -164,7 +178,7 @@ class Contact extends Component {
                                         <div className={this.state.recaptchaClass}>
                                             <ReCAPTCHA
                                                 ref={recaptchaRef}
-                                                onChange={onChange}
+                                                onChange={this.onChange}
                                                 sitekey="6LcAe7QUAAAAALCSJQT6_fHFvYRzFsYrPtxZ5Mph"
                                             />
                                         </div>
