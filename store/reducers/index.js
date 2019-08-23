@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import cards from './cards';
 import layoutItems from './layoutItems';
+import aboutPageItems from './aboutPageItems';
 
 const rootReducer = combineReducers({
-  cards,
-  layoutItems,
+  aboutPageItems,
+  layoutItems
 });
 
 export default rootReducer;

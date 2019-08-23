@@ -14,7 +14,6 @@ class PopularPosts extends Component {
                 config: store.layoutItems.popularPosts[key]
             });
         }
-console.log(popularPostsArray)
         return (
             <div className='popularPosts'>
                 <h2 className='cTitle'>

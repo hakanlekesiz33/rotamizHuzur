@@ -1,21 +1,24 @@
-import Link from 'next/link'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import initsStore from '../store/store';
+import { fetchAboutPageItems } from '../store/actions/getAboutPageActions';
 
 
-function About() {
-  return (
-    <>
-      <ul>
-        <li>
-          <Link href="/">
-            <a>Home</a>
-          </Link>
-        </li>
-        <li>About Us</li>
-      </ul>
+class About extends Component {
+  static async getInitialProps({ store }) {
+    await store.dispatch(fetchAboutPageItems());
+    let aboutStore = await store.getState().aboutPageItems;
 
-      <h1>About</h1>
-    </>
-  )
+    return { aboutStore }
+  }
+
+  render() {
+    const { aboutStore} = this.props
+    return (
+      <>
+        <div>akjdaks</div>
+      </>
+    )
+  }
 }
-
-export default About
+export default connect(initsStore)(About);
