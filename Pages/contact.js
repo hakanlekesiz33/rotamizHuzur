@@ -1,18 +1,11 @@
-import Link from 'next/link'
 import React from 'react';
-import { render } from 'react-dom';
 import '../styles/contact.scss';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import ReCAPTCHA from "react-google-recaptcha";
-
 const axios = require('axios');
+const recaptchaRef = React.createRef();
 
-function onChange(value) {
-    console.log("Captcha value:", value);
-  }
- 
-  
 const SignupSchema = Yup.object().shape({
     name: Yup.string()
         .min(2, 'Too Short!')
@@ -20,8 +13,8 @@ const SignupSchema = Yup.object().shape({
         .required('Required'),
     email: Yup.string()
         .email('Invalid email')
-        .required('Required'),
-    file: Yup.mixed().required()
+        .required('Required')
+    // file: Yup.mixed().required()
 });
 
 class Thumb extends React.Component {
@@ -64,15 +57,12 @@ class Thumb extends React.Component {
 function Contact() {
     return (
         <div id='contact'>
-
             <div className="gridWrapper">
                 <div className="row">
                     <div className="topRow">
                         <h1>Contact</h1>
                         <p>Orci pellentesque ullamcorper erat, suscipit viverra non sit venenatis ipsum volutpat. Condimentum nunc, dolor dignissim eros vestibulum, fusce gravida quis recusandae, vehic</p>
                     </div>
-
-
                     <div className="contactWrapper">
                         <div className="topInfo">
                             <div className="info">
@@ -100,22 +90,20 @@ function Contact() {
                                     file: ''
 
                                 }}
-
-
                                 validationSchema={SignupSchema}
                                 onSubmit={values => {
-                                    console.log(values)
-
+                                    if(!recaptchaRef.current.getValue()){
+                                        return; //recaptha dolu değilse formu submit etmeyecek
+                                    }
                                     const user = {
                                         username: "hakan",
                                         password: "123456"
                                     }
+
                                     let tkn;
                                     axios.post('https://localhost:44302/api/token/token', user
                                     ).then(function (response) {
-
                                         return response.data.token;
-
                                     })
                                         .then(function (token) {
                                             const ctf =
@@ -124,8 +112,6 @@ function Contact() {
                                                 message: values.message,
                                                 email: values.email
                                             }
-
-
                                             var bodyFormData = new FormData();
                                             bodyFormData.append('file', values.file);
                                             bodyFormData.append('contactForm', JSON.stringify(ctf));
@@ -135,27 +121,17 @@ function Contact() {
                                                 'Content-Type': 'multipart/form-data',
                                                 'Authorization': 'bearer ' + token
                                             }
-
-
-
-
-
                                             axios.post('https://localhost:44302/api/values/upload', bodyFormData, {
                                                 headers: headers
 
                                             }).then(function (res) {
-
                                                 console.log(res)
-
                                             })
                                         })
                                         .catch(function (error) {
-
                                             console.log(error.config);
                                         });
-
                                 }}
-
                             >
                                 {({ errors, touched, values, handleSubmit, setFieldValue }) => (
                                     <Form encType="multipart/form-data">
@@ -167,16 +143,17 @@ function Contact() {
                                         {errors.email && touched.email ? (
                                             <div>{errors.email}</div>
                                         ) : null}
-                                        <Field component="textarea"  className="form-control-lg" rows="5"  placeholder="Type Comment" name="message"/>
+                                        <Field component="textarea" className="form-control-lg" rows="5" placeholder="Type Comment" name="message" />
                                         <label>File upload</label>
                                         <input id="file" name="file" type="file" onChange={(event) => {
                                             setFieldValue("file", event.currentTarget.files[0]);
                                         }} className="form-control" />
                                         <Thumb file={values.file} />
-                                                                        <ReCAPTCHA
-                                    sitekey="6LcAe7QUAAAAALCSJQT6_fHFvYRzFsYrPtxZ5Mphy"
-                                    onChange={onChange}
-                                />
+
+                                        <ReCAPTCHA
+                                            ref={recaptchaRef}
+                                            sitekey="6LcAe7QUAAAAALCSJQT6_fHFvYRzFsYrPtxZ5Mph"
+                                        />
                                         <button type="submit" className="btn-submit">Send Message</button>
                                     </Form>
                                 )}
