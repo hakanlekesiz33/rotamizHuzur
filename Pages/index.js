@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import '../styles/index.scss';
+import '../styles/carousel.scss';
 import { connect } from 'react-redux';
 import initsStore from '../store/store';
 import Blogs from '../components/Blogs';
 import Head from 'next/head';
+import { Carousel } from 'react-responsive-carousel';
+
 
 class Index extends Component {
 
@@ -30,6 +32,20 @@ class Index extends Component {
         </Head>
         <div id='mainPage'>
           <div className="gridWrapper">
+          <Carousel>
+                <div>
+                    <img src="../static/1.jpeg" />
+                    <p className="legend">Legend 1</p>
+                </div>
+                <div>
+                    <img src="../static/2.jpeg" />
+                    <p className="legend">Legend 2</p>
+                </div>
+                <div>
+                    <img src="../static/3.jpeg" />
+                    <p className="legend">Legend 3</p>
+                </div>
+            </Carousel>
             <Blogs blogsArray={blogsArray} />
           </div>
         </div>
