@@ -4,8 +4,15 @@ import { render } from 'react-dom';
 import '../styles/contact.scss';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import ReCAPTCHA from "react-google-recaptcha";
+
 const axios = require('axios');
 
+function onChange(value) {
+    console.log("Captcha value:", value);
+  }
+ 
+  
 const SignupSchema = Yup.object().shape({
     name: Yup.string()
         .min(2, 'Too Short!')
@@ -166,6 +173,10 @@ function Contact() {
                                             setFieldValue("file", event.currentTarget.files[0]);
                                         }} className="form-control" />
                                         <Thumb file={values.file} />
+                                                                        <ReCAPTCHA
+                                    sitekey="6LcAe7QUAAAAALCSJQT6_fHFvYRzFsYrPtxZ5Mphy"
+                                    onChange={onChange}
+                                />
                                         <button type="submit" className="btn-submit">Send Message</button>
                                     </Form>
                                 )}
