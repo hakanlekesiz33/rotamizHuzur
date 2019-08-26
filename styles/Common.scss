@@ -14,7 +14,7 @@
   width: 1140px;
   margin: 0 auto;
   padding: 0;
-  .row{
+  .row {
     margin-right: 156px;
     margin-left: 156px;
   }
@@ -44,6 +44,14 @@
           box-sizing: border-box;
           display: block;
           width: 100%;
+          &.right1 {
+            position: absolute;
+            right: 10px;
+          }
+          &.right2 {
+            position: absolute;
+            right: 85px;
+          }
           a {
             text-decoration: none;
             width: 100%;

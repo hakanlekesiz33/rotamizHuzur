@@ -17,7 +17,14 @@ app.prepare()
       const actualPage = "/contact";
       app.render(req, res, actualPage)
     })
-    
+    server.get("/uye-ol", (req, res) => {
+      const actualPage = "/register";
+      app.render(req, res, actualPage)
+    })
+    server.get("/giris-yap", (req, res) => {
+      const actualPage = "/login";
+      app.render(req, res, actualPage)
+    })
     server.get('/:slug', (req, res) => {
       return app.render(req, res, '/blog', { slug: req.params.slug })
     })

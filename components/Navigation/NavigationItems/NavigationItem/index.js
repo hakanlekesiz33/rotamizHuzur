@@ -5,7 +5,7 @@ class NavigationItem extends Component {
     render() {
 
         return (
-            <li className="NavigationItem">
+            <li className={this.props.className}>
                 <Link href={this.props.link}>
                     <a> {this.props.children} </a>
                 </Link>

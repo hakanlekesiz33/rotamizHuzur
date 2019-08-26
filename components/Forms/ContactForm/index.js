@@ -5,13 +5,13 @@ import ReCAPTCHA from "react-google-recaptcha";
 const axios = require('axios');
 const recaptchaRef = React.createRef();
 import MaskedInput from "react-text-mask";
-import Thumb from '../Thumb';//input file resim seçildikten input yanında göstermek için kullanacaz
-import InputText from './Inputs/InputText'
-import InputSelect from './Inputs/InputSelect'
-import InputTextArea from './Inputs/InputTextArea'
-import CheckBox from './Inputs/CheckBox'
-import CheckBoxesGroup from './Inputs/CheckBoxesGroup'
-import RadioButtonsGroup from './Inputs/RadioButtonsGroup'
+import Thumb from '../../Thumb';//input file resim seçildikten input yanında göstermek için kullanacaz
+import InputText from '../Inputs/InputText'
+import InputSelect from '../Inputs/InputSelect'
+import InputTextArea from '../Inputs/InputTextArea'
+import CheckBox from '../Inputs/CheckBox'
+import CheckBoxesGroup from '../Inputs/CheckBoxesGroup'
+import RadioButtonsGroup from '../Inputs/RadioButtonsGroup'
 
 
 const phoneNumberMask = [
@@ -129,15 +129,21 @@ class ContactForm extends Component {
                   type="text"
                   placeholder="Adınız"
                   name="name"
-                  isValid={errors.name}
-                  isTouched={touched.name}
+                  className={
+                    errors.name && touched.name
+                      ? "form-control error"
+                      : "form-control"
+                  }
                 />
                 <InputText
                   type="text"
                   placeholder="Email Adresi"
                   name="email"
-                  isValid={errors.email}
-                  isTouched={touched.email}
+                  className={
+                    errors.email && touched.email
+                      ? "form-control error"
+                      : "form-control"
+                  }
                 />
 
                 {/* <h2>Single checkbox</h2>

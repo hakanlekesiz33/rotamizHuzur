@@ -19,14 +19,18 @@ class NavigationItems extends Component {
         return (
 
             <ul className="NavigationItems">
-                <NavigationItem link="/iletisim">İletişim</NavigationItem>
-                <NavigationItem link="/hakkimizda">Hakkımızda</NavigationItem>
+                <NavigationItem className="NavigationItem" link="/iletisim">İletişim</NavigationItem>
+                <NavigationItem className="NavigationItem" link="/hakkimizda">Hakkımızda</NavigationItem>
                 <NavigationItem
+                    className="NavigationItem"
                     link="/kategoriler"
                     hasSubMenu={true}
                     subItems={categoriesArray}>
                     Kategoriler
                     </NavigationItem>
+                <NavigationItem className="NavigationItem right2" link="/uye-ol">Üye Ol</NavigationItem>
+                <NavigationItem className="NavigationItem right1" link="/giris-yap">Giriş Yap</NavigationItem>
+
             </ul>
 
         );

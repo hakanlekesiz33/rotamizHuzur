@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import initsStore from '../store/store';
 import '../styles/contact.scss';
 import '../styles/formElements.scss';
-import ContactForm from '../components/ContactForm'
+import ContactForm from '../components/Forms/ContactForm'
 
 class Contact extends Component {
     render() {
