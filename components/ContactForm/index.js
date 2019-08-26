@@ -146,7 +146,6 @@ class ContactForm extends Component {
                   id="singleCheckbox"
                   label="Agree to something"
                 />
-
                 <h2>Checkbox group</h2>
                 <CheckBoxesGroup
                   id="checkboxGroup"
@@ -162,7 +161,6 @@ class ContactForm extends Component {
                     { name: 'checkboxGroup', id: 'checkbox3', label: 'Option 3' }
                   ]}
                 />
-
                 <h2>Radio group</h2>
                 <RadioButtonsGroup
                   id="radioGroup"
@@ -175,7 +173,6 @@ class ContactForm extends Component {
                     { name: 'radioGroup', id: 'radioOption2', label: 'Or choose this one 2' }
                   ]}
                 />
-
                 <InputSelect
                   id="selectColor"
                   name="selectColor"
@@ -198,12 +195,9 @@ class ContactForm extends Component {
                 <input id="file" name="file" type="file" onChange={(event) => {
                   setFieldValue("file", event.currentTarget.files[0]);
                 }} className="form-control" />
-
-
                 <label htmlFor="phone">
                   Phone Number
                  </label>
-
                 <Field
                   name="phone"
                   render={({ field }) => (
@@ -213,7 +207,6 @@ class ContactForm extends Component {
                       id="phone"
                       placeholder="Enter your phone number"
                       type="text"
-
                       className={
                         errors.phone && touched.phone
                           ? "text-input error"
@@ -222,7 +215,6 @@ class ContactForm extends Component {
                     />
                   )}
                 />
-
                 {errors.phone && touched.phone && (
                   <div className="input-feedback">{errors.phone}</div>
                 )} 
