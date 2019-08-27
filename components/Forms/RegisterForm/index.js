@@ -71,12 +71,12 @@ class RegisterForm extends Component {
           onSubmit={values => {
 
             console.log(values);
-            // console.log(values.BirthDate.toISOString());
-            // if (!recaptchaRef.current.getValue()) {
-            //   console.log("recaptchaClass error");
-            //   this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
-            //   return; //recaptha dolu değilse formu submit etmeyecek
-            // }
+            console.log(values.BirthDate.toISOString());
+            if (!recaptchaRef.current.getValue()) {
+              console.log("recaptchaClass error");
+              this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
+              return; //recaptha dolu değilse formu submit etmeyecek
+            }
             const user = {
               username: "hakan",
               password: "123456"
