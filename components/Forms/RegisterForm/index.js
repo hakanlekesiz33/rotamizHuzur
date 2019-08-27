@@ -62,8 +62,8 @@ class RegisterForm extends Component {
             Gender: '',
             BirthDate: new Date(),
             Address: '',
-            City: '',
-            Country: '',
+            City: '0',
+            Country: '0',
             PostaCode: '',
             Image: '',
           }}
@@ -71,12 +71,54 @@ class RegisterForm extends Component {
           onSubmit={values => {
 
             console.log(values);
-            console.log(values.BirthDate.toISOString());
-            if (!recaptchaRef.current.getValue()) {
-              console.log("recaptchaClass error");
-              this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
-              return; //recaptha dolu değilse formu submit etmeyecek
+            // console.log(values.BirthDate.toISOString());
+            // if (!recaptchaRef.current.getValue()) {
+            //   console.log("recaptchaClass error");
+            //   this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
+            //   return; //recaptha dolu değilse formu submit etmeyecek
+            // }
+            const user = {
+              username: "hakan",
+              password: "123456"
             }
+
+            axios.post('https://localhost:44302/api/token/token', user
+            ).then(function (response) {
+              return response.data.token;
+            })
+              .then(function (token) {
+                const registerForm =
+                {
+                  UserName: values.UserName,
+                  password: values.password,
+                  Name: values.Name,
+                  SurName: values.SurName,
+                  Phone: values.Phone,
+                  Gender: values.Gender,
+                  BirthDate: values.BirthDate,
+                  Address: values.Address,
+                  City: values.City,
+                  Country: values.Country,
+                  PostaCode: values.PostaCode
+                }
+                var bodyFormData = new FormData();
+                bodyFormData.append('Image', values.Image);
+                bodyFormData.append('registerForm', JSON.stringify(registerForm));
+
+                const headers = {
+                  'Content-Type': 'multipart/form-data',
+                  'Authorization': 'bearer ' + token
+                }
+                axios.post('https://localhost:44302/api/Auth/register', bodyFormData, {
+                  headers: headers
+
+                }).then(function (res) {
+                  console.log(res)
+                })
+              })
+              .catch(function (error) {
+                console.log(error.config);
+              });
 
           }}
         >
@@ -183,6 +225,7 @@ class RegisterForm extends Component {
                   id="City"
                   name="City"
                   options={[
+                    { name: 'Şehir Seçiniz', value: '0' },
                     { name: 'İstanbul', value: 'İstanbul' },
                     { name: 'Mersin', value: 'Mersin' },
                     { name: 'İzmir', value: 'İzmir' }
@@ -193,6 +236,7 @@ class RegisterForm extends Component {
                   id="Country"
                   name="Country"
                   options={[
+                    { name: 'Ülke Seçiniz', value: '0' },
                     { name: 'Türkiye', value: 'Türkiye' },
                     { name: 'Almanya', value: 'Almanya' },
                     { name: 'ABD', value: 'ABD' }
