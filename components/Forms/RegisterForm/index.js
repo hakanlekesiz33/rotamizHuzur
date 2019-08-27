@@ -1,18 +1,42 @@
 import React, { Component } from 'react';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import ReCAPTCHA from "react-google-recaptcha";
 const axios = require('axios');
+import ReCAPTCHA from "react-google-recaptcha";
 const recaptchaRef = React.createRef();
+import InputSelect from '../Inputs/InputSelect'
+
+import * as Yup from 'yup';
+import { Formik, Form, Field } from 'formik';
+import MaskedInput from "react-text-mask";
+import phoneNumberMask from '../Masks/phoneNumberMask'
+import DatePicker from "react-datepicker";
+import "../../../styles/react-datepicker.scss"
 import InputText from '../Inputs/InputText'
+import RadioButtonsGroup from '../Inputs/RadioButtonsGroup'
+import InputTextArea from '../Inputs/InputTextArea'
+
+
+const DatePickerField = ({ name, value, onChange }) => {
+  return (
+    <DatePicker
+      selected={(value && new Date(value)) || null}
+      onChange={val => {
+        onChange(name, val);
+      }}
+    />
+  );
+};
+
 
 
 const SignupSchema = Yup.object().shape({
-  username: Yup.string()
+  UserName: Yup.string()
     .required('Required'),
   password: Yup.string()
     .required('Required'),
+    Gender: Yup.string().required("Zorunlu Alan"),
 });
+
+
 
 class RegisterForm extends Component {
   state = {
@@ -30,20 +54,32 @@ class RegisterForm extends Component {
       <>
         <Formik
           initialValues={{
-            username: '',
-            password: ''
+            UserName: '',
+            password: '',
+            Name: '',
+            SurName: '',
+            Phone: '',
+            Gender: '',
+            BirthDate: new Date(),
+            Address: '',
+            City: '',
+            Country: '',
+            PostaCode: '',
+            Image: '',
           }}
           validationSchema={SignupSchema}
           onSubmit={values => {
 
             console.log(values);
-
+            alert(values)
+            console.log(values.BirthDate.toISOString());
+            debugger;
             if (!recaptchaRef.current.getValue()) {
               console.log("recaptchaClass error");
               this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
               return; //recaptha dolu değilse formu submit etmeyecek
             }
-            
+
           }}
         >
           {({ errors, touched, values, handleSubmit, setFieldValue,
@@ -53,9 +89,9 @@ class RegisterForm extends Component {
                 <InputText
                   type="text"
                   placeholder="Kullanıcı Adı"
-                  name="username"
+                  name="UserName"
                   className={
-                    errors.username && touched.username
+                    errors.UserName && touched.UserName
                       ? "form-element username error"
                       : "form-element username"
                   }
@@ -70,7 +106,116 @@ class RegisterForm extends Component {
                       : "form-element password"
                   }
                 />
-                
+                <InputText
+                  type="text"
+                  placeholder="Adınız"
+                  name="Name"
+                  className={
+                    errors.Name && touched.Name
+                      ? "form-element name error"
+                      : "form-element name"
+                  }
+                />
+                <InputText
+                  type="text"
+                  placeholder="Soy Adınız"
+                  name="SurName"
+                  className={
+                    errors.SurName && touched.SurName
+                      ? "form-element surName error"
+                      : "form-element surName"
+                  }
+                />
+
+                <Field
+                  name="Phone"
+                  render={({ field }) => (
+                    <MaskedInput
+                      {...field}
+                      mask={phoneNumberMask}
+                      id="Phone"
+                      placeholder="Telefon Numarası"
+                      type="text"
+                      className={
+                        errors.Phone && touched.Phone
+                          ? "form-element phone error"
+                          : "form-element phone"
+                      }
+                    />
+                  )}
+                />
+
+                <h5>Doğum Tarihiniz</h5>
+                <DatePickerField
+                  name="BirthDate"
+                  value={values.BirthDate}
+                  onChange={setFieldValue}
+                  className="form-element birthDate"
+                  dateFormat="Pp"
+                />
+
+
+                <h5>Cinsiyet</h5>
+                <RadioButtonsGroup
+                  id="Gender"
+                  label="Lütfen Birini Seçiniz"
+                  value={values.Gender}
+                  error={errors.Gender}
+                  touched={touched.Gender}
+                  radioButtons={[
+                    { name: 'Gender', id: 'male', label: 'Erkek' },
+                    { name: 'Gender', id: 'female', label: 'Kadın' }
+                  ]}
+                  className={
+                    errors.Gender && touched.Gender
+                      ? "form-element gender error"
+                      : "form-element gender"
+                  }
+                />
+
+                <InputTextArea
+                  id="Address"
+                  name="Address"
+                  className="form-element address"
+                  rows="5"
+                  placeholder="Adresiniz"
+                />
+                <h5>Şehir Seçiniz</h5>
+                <InputSelect
+                  id="City"
+                  name="City"
+                  options={[
+                    { name: 'İstanbul', value: 'İstanbul' },
+                    { name: 'Mersin', value: 'Mersin' },
+                    { name: 'İzmir', value: 'İzmir' }
+                  ]}
+                />
+                <h5>Ülke Seçiniz</h5>
+                <InputSelect
+                  id="Country"
+                  name="Country"
+                  options={[
+                    { name: 'Türkiye', value: 'Türkiye' },
+                    { name: 'Almanya', value: 'Almanya' },
+                    { name: 'ABD', value: 'ABD' }
+                  ]}
+                />
+
+                <InputText
+                  type="text"
+                  placeholder="Posta Kodu"
+                  name="PostaCode"
+                  className={
+                    errors.PostaCode && touched.PostaCode
+                      ? "form-element postaCode error"
+                      : "form-element postaCode"
+                  }
+                />
+                <label>Profil Resmi Yükleyiniz</label>
+                <input id="Image" name="Image" type="file" onChange={(event) => {
+                  setFieldValue("Image", event.currentTarget.files[0]);
+                }} className="form-element image" />
+
                 <div className={this.state.recaptchaClass}>
                   <ReCAPTCHA
                     ref={recaptchaRef}
@@ -79,7 +224,7 @@ class RegisterForm extends Component {
                   />
                 </div>
 
-                <button type="submit" className="btn-submit">Giriş Yap</button>
+                <button type="submit" className="btn-submit">Üye Ol</button>
               </Form>
             )}
         </Formik>

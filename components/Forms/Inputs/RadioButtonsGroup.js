@@ -35,12 +35,13 @@ const RadioButtonGroup = ({
     touched,
     id,
     label,
-    children
+    children,
+    className
 }) => {
 
 
     return (
-        <div>
+        <div className={className}>
             <fieldset>
                 <legend>{label}</legend>
                 {children}
@@ -59,6 +60,7 @@ const RadioButtonsGroup = (props) => (
         value={props.value}
         error={props.error}
         touched={props.touched}
+        className={props.className}
     >
         {props.radioButtons.map(radioButton => (
             <Field

@@ -24,11 +24,18 @@
       }
 
       .registerWrapper {
-        display: flex;
-        justify-content: center;
         form {
+          width: 100%;
+
           .form-element {
             margin-bottom: 10px;
+            width: 45%;
+            &.gender.error{
+              fieldset{
+
+                border: 2px solid red;
+              }
+            }
           }
           .btn-submit {
             display: inline-block;
