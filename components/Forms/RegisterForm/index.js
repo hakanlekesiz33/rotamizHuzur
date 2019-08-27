@@ -71,9 +71,7 @@ class RegisterForm extends Component {
           onSubmit={values => {
 
             console.log(values);
-            alert(values)
             console.log(values.BirthDate.toISOString());
-            debugger;
             if (!recaptchaRef.current.getValue()) {
               console.log("recaptchaClass error");
               this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
