@@ -2,45 +2,46 @@ import React, { Component } from 'react';
 const axios = require('axios');
 import ReCAPTCHA from "react-google-recaptcha";
 const recaptchaRef = React.createRef();
-import InputSelect from '../Inputs/InputSelect'
+
 
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import MaskedInput from "react-text-mask";
 import phoneNumberMask from '../Masks/phoneNumberMask'
-import DatePicker from "react-datepicker";
 import "../../../styles/react-datepicker.scss"
 import InputText from '../Inputs/InputText'
-import RadioButtonsGroup from '../Inputs/RadioButtonsGroup'
 import InputTextArea from '../Inputs/InputTextArea'
+import InputSelect from '../Inputs/InputSelect'
+import InputSelect2 from '../Inputs/InputSelect2'
+import DatePicker from '../Inputs/DatePicker'
+import RadioButtonsGroup from '../Inputs/RadioButtonsGroup'
 
-
-const DatePickerField = ({ name, value, onChange }) => {
-  return (
-    <DatePicker
-      selected={(value && new Date(value)) || null}
-      onChange={val => {
-        onChange(name, val);
-      }}
-    />
-  );
-};
-
-
+const allTownOptions = [
+  { value: 'Bakırköy', label: 'Bakırköy', city: 'İstanbul' },
+  { value: 'Maltepe', label: 'Maltepe', city: 'İstanbul' },
+  { value: 'Gaziemir', label: 'Gaziemir', city: 'İzmir' },
+  { value: 'Konak', label: 'Konak', city: 'İzmir' },
+  { value: 'Anamur', label: 'Anamur', city: 'Mersin' },
+  { value: 'Tarsus', label: 'Tarsus', city: 'Mersin' }
+];
 
 const SignupSchema = Yup.object().shape({
   UserName: Yup.string()
     .required('Required'),
   password: Yup.string()
     .required('Required'),
-    Gender: Yup.string().required("Zorunlu Alan"),
+  Gender: Yup.string().required("Zorunlu Alan"),
 });
-
-
 
 class RegisterForm extends Component {
   state = {
-    recaptchaClass: "recaptchaClass"
+    recaptchaClass: "recaptchaClass",
+    CountryCode:null,
+    City: null,
+    Country: null,
+    Town: null,
+    townOptions: [],
+    townDisabled: true
   };
 
   onChangeRecaptcha = values => {
@@ -48,6 +49,24 @@ class RegisterForm extends Component {
       this.setState({ ...this.state, recaptchaClass: "recaptchaClass" });
     }
   }
+
+  select2HandleChangeCity = City => {
+    const updatedTownOptions = allTownOptions.filter((town) => City.value == town.city);
+    this.setState({ ...this.state, City: City, townDisabled: false, townOptions: updatedTownOptions });
+  };
+
+  select2HandleChangeCountry = Country => {
+    this.setState({ ...this.state, Country: Country });
+  };
+  
+  select2HandleChangeCountryCode = CountryCode => {
+    this.setState({ ...this.state, CountryCode: CountryCode });
+  };
+
+  select2HandleChangeTown = Town => {
+    this.setState({ ...this.state, Town: Town });
+  };
+
   render() {
 
     return (
@@ -62,15 +81,12 @@ class RegisterForm extends Component {
             Gender: '',
             BirthDate: new Date(),
             Address: '',
-            City: '0',
-            Country: '0',
             PostaCode: '',
-            Image: '',
+            Image: ''
           }}
           validationSchema={SignupSchema}
           onSubmit={values => {
 
-            console.log(values);
             console.log(values.BirthDate.toISOString());
             if (!recaptchaRef.current.getValue()) {
               console.log("recaptchaClass error");
@@ -97,10 +113,12 @@ class RegisterForm extends Component {
                   Gender: values.Gender,
                   BirthDate: values.BirthDate,
                   Address: values.Address,
-                  City: values.City,
-                  Country: values.Country,
+                  City: this.state.City.value,
+                  Country: this.state.Country.value,
+                  Town: this.state.Town.value,
                   PostaCode: values.PostaCode
                 }
+                console.log(registerForm);
                 var bodyFormData = new FormData();
                 bodyFormData.append('Image', values.Image);
                 bodyFormData.append('registerForm', JSON.stringify(registerForm));
@@ -121,8 +139,13 @@ class RegisterForm extends Component {
               });
 
           }}
+
         >
-          {({ errors, touched, values, handleSubmit, setFieldValue,
+          {({ errors,
+            touched,
+            values,
+            handleSubmit,
+            setFieldValue,
             setFieldTouched }) => (
               <Form encType="multipart/form-data">
 
@@ -167,6 +190,19 @@ class RegisterForm extends Component {
                   }
                 />
 
+                <h5>Ülke Kodu Seçiniz</h5>
+                <InputSelect2
+                  name="CountryCode"
+                  id="CountryCode"
+                  value={this.state.CountryCode}
+                  onChange={this.select2HandleChangeCountryCode}
+                  options={[
+                    { value: 'Türkiye +75', label: '+90 Türkiye' },
+                    { value: 'Almanya +75', label: '+80 Almanya' },
+                    { value: 'ABD +75', label: '+75 ABD' }
+                  ]}
+                  isMulti={false}
+                />
                 <Field
                   name="Phone"
                   render={({ field }) => (
@@ -186,14 +222,12 @@ class RegisterForm extends Component {
                 />
 
                 <h5>Doğum Tarihiniz</h5>
-                <DatePickerField
+                <DatePicker
                   name="BirthDate"
                   value={values.BirthDate}
                   onChange={setFieldValue}
                   className="form-element birthDate"
-                  dateFormat="Pp"
                 />
-
 
                 <h5>Cinsiyet</h5>
                 <RadioButtonsGroup
@@ -220,8 +254,8 @@ class RegisterForm extends Component {
                   rows="5"
                   placeholder="Adresiniz"
                 />
-                <h5>Şehir Seçiniz</h5>
-                <InputSelect
+
+                {/* <InputSelect
                   id="City"
                   name="City"
                   options={[
@@ -230,17 +264,45 @@ class RegisterForm extends Component {
                     { name: 'Mersin', value: 'Mersin' },
                     { name: 'İzmir', value: 'İzmir' }
                   ]}
-                />
+                /> */}
+
                 <h5>Ülke Seçiniz</h5>
-                <InputSelect
-                  id="Country"
+                <InputSelect2
                   name="Country"
+                  id="Country"
+                  value={this.state.Country}
+                  onChange={this.select2HandleChangeCountry}
                   options={[
-                    { name: 'Ülke Seçiniz', value: '0' },
-                    { name: 'Türkiye', value: 'Türkiye' },
-                    { name: 'Almanya', value: 'Almanya' },
-                    { name: 'ABD', value: 'ABD' }
+                    { value: 'Türkiye', label: 'Türkiye' },
+                    { value: 'Almanya', label: 'Almanya' },
+                    { value: 'ABD', label: 'ABD' }
                   ]}
+                  isMulti={false}
+                />
+
+                <h5>Şehir Seçiniz</h5>
+                <InputSelect2
+                  name="City"
+                  id="City"
+                  value={this.state.City}
+                  onChange={this.select2HandleChangeCity}
+                  options={[
+                    { value: 'İstanbul', label: 'İstanbul' },
+                    { value: 'Mersin', label: 'Mersin' },
+                    { value: 'İzmir', label: 'İzmir' }
+                  ]}
+                  isMulti={false}
+                />
+
+                <h5>İlçe Seçiniz</h5>
+                <InputSelect2
+                  name="Town"
+                  id="Town"
+                  value={this.state.Town}
+                  onChange={this.select2HandleChangeTown}
+                  options={this.state.townOptions}
+                  isMulti={false}
+                  isDisabled={this.state.townDisabled}
                 />
 
                 <InputText
@@ -253,6 +315,7 @@ class RegisterForm extends Component {
                       : "form-element postaCode"
                   }
                 />
+
                 <label>Profil Resmi Yükleyiniz</label>
                 <input id="Image" name="Image" type="file" onChange={(event) => {
                   setFieldValue("Image", event.currentTarget.files[0]);
