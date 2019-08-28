@@ -27,9 +27,13 @@ class LoginForm extends Component {
   }
 
   onInputChange = (e,inputName, setFieldValue) => {
-    console.log(e.target.value);
-    const domain = e.target.value.replace(/^[0-9a-zA-Z]*$/, "")
-    setFieldValue(inputName, domain, false)
+    let inputValue=e.target.value;
+    console.log(/^[-]*$/.test(inputValue.slice(-1)));
+    console.log(/^[0-9a-zA-Z]*$/.test(inputValue.slice(-1)));
+    if(!(/^[-]*$/.test(inputValue.slice(-1)) || /^[0-9a-zA-Z]*$/.test(inputValue.slice(-1)))){
+      inputValue = inputValue.replace(/.$/,'')
+    }
+    setFieldValue(inputName, inputValue, false)
   }
   render() {
 
