@@ -5,6 +5,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 const axios = require('axios');
 const recaptchaRef = React.createRef();
 import InputText from '../Inputs/InputText'
+import Link from 'next/link';
 
 
 const SignupSchema = Yup.object().shape({
@@ -43,7 +44,7 @@ class LoginForm extends Component {
               this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
               return; //recaptha dolu değilse formu submit etmeyecek
             }
-            
+
           }}
         >
           {({ errors, touched, values, handleSubmit, setFieldValue,
@@ -70,7 +71,10 @@ class LoginForm extends Component {
                       : "form-element password"
                   }
                 />
-                
+                <Link href="/forgetPassword">
+                  <a>Şifremi unuttum</a>
+                </Link>
+
                 <div className={this.state.recaptchaClass}>
                   <ReCAPTCHA
                     ref={recaptchaRef}
