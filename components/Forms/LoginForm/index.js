@@ -25,6 +25,12 @@ class LoginForm extends Component {
       this.setState({ ...this.state, recaptchaClass: "recaptchaClass" });
     }
   }
+
+  onInputChange = (e,inputName, setFieldValue) => {
+    console.log(e.target.value);
+    const domain = e.target.value.replace(/^[0-9a-zA-Z]*$/, "")
+    setFieldValue(inputName, domain, false)
+  }
   render() {
 
     return (
@@ -38,12 +44,20 @@ class LoginForm extends Component {
           onSubmit={values => {
 
             console.log(values);
-
-            if (!recaptchaRef.current.getValue()) {
-              console.log("recaptchaClass error");
-              this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
-              return; //recaptha dolu değilse formu submit etmeyecek
+            const user = {
+              username: values.username,
+              password: values.password
             }
+            axios.post('https://localhost:44302/api/auth/login', user
+            ).then(function (response) {
+              console.log(response);
+            })
+
+            // if (!recaptchaRef.current.getValue()) {
+            //   console.log("recaptchaClass error");
+            //   this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
+            //   return; //recaptha dolu değilse formu submit etmeyecek
+            // }
 
           }}
         >
@@ -55,6 +69,8 @@ class LoginForm extends Component {
                   type="text"
                   placeholder="Kullanıcı Adı"
                   name="username"
+                  value={values.username}
+                  onChange={ev => this.onInputChange(ev,"username", setFieldValue)}
                   className={
                     errors.username && touched.username
                       ? "form-element username error"
@@ -65,6 +81,8 @@ class LoginForm extends Component {
                   type="password"
                   placeholder="password"
                   name="password"
+                  value={values.password}
+                  onChange={ev => this.onInputChange(ev,"password", setFieldValue)}
                   className={
                     errors.password && touched.password
                       ? "form-element password error"

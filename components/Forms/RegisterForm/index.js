@@ -150,7 +150,7 @@ class RegisterForm extends Component {
   select2HandleChangeCountry = Country => {
     this.setState({ ...this.state, Country: Country });
   };
-  
+
   select2HandleChangeCountryCode = CountryCode => {
     this.setState({ ...this.state, CountryCode: CountryCode });
   };
@@ -176,13 +176,17 @@ class RegisterForm extends Component {
             BirthDate: new Date(),
             Address: '',
             PostaCode: '',
+            Image:''
           }}
+          
           validationSchema={SignupSchema}
           onSubmit={values => {
-        debugger;
-        console.log(this.state.blobFile)
+          console.log(values.Image);
+            const selectedCountry = this.state.Country != null ? this.state.Country.value : null;
+            const selectedCity = this.state.City != null ? this.state.City.value : null;
+            const selectedTown = this.state.Town != null ? this.state.Town.value : null;
+            debugger;
 
-            console.log(values.BirthDate.toISOString());
             // if (!recaptchaRef.current.getValue()) {
             //   console.log("recaptchaClass error");
             //   this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
@@ -198,6 +202,7 @@ class RegisterForm extends Component {
               return response.data.token;
             })
               .then(function (token) {
+                debugger;
                 const registerForm =
                 {
                   UserName: values.UserName,
@@ -208,9 +213,9 @@ class RegisterForm extends Component {
                   Gender: values.Gender,
                   BirthDate: values.BirthDate,
                   Address: values.Address,
-                  City: this.state.City.value,
-                  Country: this.state.Country.value,
-                  Town: this.state.Town.value,
+                  City: selectedCity,
+                  Country: selectedCountry,
+                  Town: selectedTown,
                   PostaCode: values.PostaCode
                 }
                 console.log(registerForm);
