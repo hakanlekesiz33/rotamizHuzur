@@ -10,8 +10,8 @@ class Input extends Component {
                 type={this.props.type}
                 placeholder={this.props.placeholder}
                 name={this.props.name}
-                value={this.props.value}
-                onChange={this.props.onChange}
+                // value={this.props.value}
+                // onChange={this.props.onChange}
                 className={this.props.className}
             />
         )
