@@ -50,9 +50,11 @@ class LoginForm extends Component {
               username: values.username,
               password: values.password
             }
-            axios.post('https://localhost:44302/api/auth/login', user
+            axios.post('http://reprep.api.feux.digital/api/auth/login', user
             ).then(function (response) {
-              console.log(response);
+              console.log(response)
+                const token = response.data.tokenString;
+                alert(response.data.status)
             })
 
             if (!recaptchaRef.current.getValue()) {

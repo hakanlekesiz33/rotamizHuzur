@@ -63,7 +63,7 @@ class ContactForm extends Component {
               password: "123456"
             }
 
-            axios.post('https://localhost:44302/api/token/token', user
+            axios.post('http://reprep.api.feux.digital/api/token/token', user
             ).then(function (response) {
               return response.data.token;
             })
@@ -82,7 +82,7 @@ class ContactForm extends Component {
                   'Content-Type': 'multipart/form-data',
                   'Authorization': 'bearer ' + token
                 }
-                axios.post('https://localhost:44302/api/values/upload', bodyFormData, {
+                axios.post('http://reprep.api.feux.digital/api/values/upload', bodyFormData, {
                   headers: headers
 
                 }).then(function (res) {

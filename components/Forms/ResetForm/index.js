@@ -34,7 +34,7 @@ class ResetForm extends Component {
             code: values.code,
             newPassword: values.password
         }
-        let res = await axios.post('https://localhost:44302/api/auth/confirmPassword', form)
+        let res = await axios.post('http://reprep.api.feux.digital/api/auth/confirmPassword', form)
         console.log(res.data);
 
         debugger;
@@ -59,11 +59,11 @@ class ResetForm extends Component {
 
                         console.log(values);
 
-                        // if (!recaptchaRef.current.getValue()) {
-                        //     console.log("recaptchaClass error");
-                        //     this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
-                        //     return; //recaptha dolu değilse formu submit etmeyecek
-                        // }
+                        if (!recaptchaRef.current.getValue()) {
+                            console.log("recaptchaClass error");
+                            this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
+                            return; //recaptha dolu değilse formu submit etmeyecek
+                        }
                         this.onRefreshPassword(values)
 
 

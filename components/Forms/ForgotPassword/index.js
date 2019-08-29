@@ -28,7 +28,7 @@ class ForgotPassword extends Component {
 
     onResetPassword = async (values) => {
 
-        let res = await axios.post('https://localhost:44302/api/auth/resetPassword', values)
+        let res = await axios.post('http://reprep.api.feux.digital/api/auth/resetPassword', values)
         console.log(res.data);
 
         debugger;
@@ -72,7 +72,7 @@ class ForgotPassword extends Component {
                                     type="text"
                                     placeholder="Email Adresini Giriniz"
                                     name="email"
-                                    value={values.username}
+                                    value={values.email}
                                     onChange={ev => this.onInputChange(ev, "email", setFieldValue)}
                                     className={
                                         errors.email && touched.email

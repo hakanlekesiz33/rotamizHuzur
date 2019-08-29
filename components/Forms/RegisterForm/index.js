@@ -31,8 +31,11 @@ const allTownOptions = [
 
 const SignupSchema = Yup.object().shape({
   UserName: Yup.string()
-  .trim()
-  .required('Required'),
+    .trim()
+    .required('Required'),
+    email: Yup.string()
+    .email('Invalid email')
+    .required('Required'),
   password: Yup.string()
     .required('Required'),
   Gender: Yup.string().required("Zorunlu Alan"),
@@ -45,10 +48,10 @@ class RegisterForm extends Component {
     crop: {
       unit: "%",
       width: 30,
-      aspect: 1 /  1
+      aspect: 1 / 1
     },
-    blobFile:[],
-    CountryCode:null,
+    blobFile: [],
+    CountryCode: null,
     City: null,
     Country: null,
     Town: null,
@@ -56,7 +59,7 @@ class RegisterForm extends Component {
     townDisabled: true
   };
 
-  
+
   onSelectFile = e => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
@@ -74,7 +77,7 @@ class RegisterForm extends Component {
 
   onCropComplete = crop => {
     this.makeClientCrop(crop);
-   
+
   };
 
   onCropChange = (crop, percentCrop) => {
@@ -118,19 +121,15 @@ class RegisterForm extends Component {
     return new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
         if (!blob) {
-          //reject(new Error('Canvas is empty'));
-          console.error("Canvas is empty");
           return;
         }
         blob.name = fileName;
         window.URL.revokeObjectURL(this.fileUrl);
         this.fileUrl = window.URL.createObjectURL(blob);
         var files = [];
-        var file = new File([blob], "name");
+        var file = new File([blob], "name.jpg");
         files.push(file);
-        console.log(file)
-        this.setState({...this.state ,blobFile:files});
-        console.log(this.state.blobFile[0]);
+        this.setState({ ...this.state, blobFile: files });
         resolve(this.fileUrl);
       }, "image/jpeg");
     });
@@ -158,9 +157,10 @@ class RegisterForm extends Component {
   select2HandleChangeTown = Town => {
     this.setState({ ...this.state, Town: Town });
   };
+
   onInputChange = (e, inputName, setFieldValue) => {
     setFieldValue(inputName, e.target.value, false)
-}
+  }
   render() {
 
     const { crop, croppedImageUrl, src } = this.state;
@@ -178,9 +178,10 @@ class RegisterForm extends Component {
             BirthDate: new Date(),
             Address: '',
             PostaCode: '',
-            Image:''
+            Image: '',
+            email: ''
           }}
-          
+
           validationSchema={SignupSchema}
           onSubmit={values => {
             console.log(this.state.blobFile[0]);
@@ -200,7 +201,7 @@ class RegisterForm extends Component {
               password: "123456"
             }
 
-            axios.post('https://localhost:44302/api/token/token', user
+            axios.post('http://reprep.api.feux.digital/api/token/token', user
             ).then(function (response) {
               return response.data.token;
             })
@@ -209,6 +210,7 @@ class RegisterForm extends Component {
                 {
                   UserName: values.UserName,
                   password: values.password,
+                  Email: values.email,
                   Name: values.Name,
                   SurName: values.SurName,
                   Phone: values.Phone,
@@ -229,11 +231,11 @@ class RegisterForm extends Component {
                   'Content-Type': 'multipart/form-data',
                   'Authorization': 'bearer ' + token
                 }
-                axios.post('https://localhost:44302/api/Auth/register', bodyFormData, {
+                axios.post('http://reprep.api.feux.digital/api/Auth/register', bodyFormData, {
                   headers: headers
 
                 }).then(function (res) {
-                  console.log(res)
+                  alert(res.data.status)
                 })
               })
               .catch(function (error) {
@@ -250,7 +252,18 @@ class RegisterForm extends Component {
             setFieldValue,
             setFieldTouched }) => (
               <Form encType="multipart/form-data">
-
+                <InputText
+                  type="text"
+                  placeholder="Email Adresi"
+                  name="email"
+                  value={values.email}
+                  onChange={ev => this.onInputChange(ev, "email", setFieldValue)}
+                  className={
+                    errors.email && touched.email
+                      ? "form-control error"
+                      : "form-control"
+                  }
+                />
                 <InputText
                   type="text"
                   placeholder="Kullanıcı Adı"
@@ -430,20 +443,21 @@ class RegisterForm extends Component {
 
                 <label>Profil Resmi Yükleyiniz</label>
                 <div>
-          <input type="file" onChange={this.onSelectFile} />
-        </div>
-        {src && (
-          <ReactCrop
-            src={src}
-            crop={crop}
-            onImageLoaded={this.onImageLoaded}
-            onComplete={this.onCropComplete}
-            onChange={this.onCropChange}
-          />
-        )}
-        {croppedImageUrl && (
-          <img alt="Crop" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
-        )}
+                  <input type="file" onChange={this.onSelectFile} />
+                </div>
+
+                {src && (
+                  <ReactCrop
+                    src={src}
+                    crop={crop}
+                    onImageLoaded={this.onImageLoaded}
+                    onComplete={this.onCropComplete}
+                    onChange={this.onCropChange}
+                  />
+                )}
+                {croppedImageUrl && (
+                  <img alt="Crop" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
+                )}
 
                 <div className={this.state.recaptchaClass}>
                   <ReCAPTCHA
