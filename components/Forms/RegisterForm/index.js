@@ -47,7 +47,7 @@ class RegisterForm extends Component {
       width: 30,
       aspect: 1 /  1
     },
-    blobFile:null,
+    blobFile:[],
     CountryCode:null,
     City: null,
     Country: null,
@@ -125,10 +125,12 @@ class RegisterForm extends Component {
         blob.name = fileName;
         window.URL.revokeObjectURL(this.fileUrl);
         this.fileUrl = window.URL.createObjectURL(blob);
+        var files = [];
         var file = new File([blob], "name");
+        files.push(file);
         console.log(file)
-        this.setState({...this.state ,blobFile:file});
-        console.log("hakan:"+JSON.stringify(this.state.blobFile));
+        this.setState({...this.state ,blobFile:files});
+        console.log(this.state.blobFile[0]);
         resolve(this.fileUrl);
       }, "image/jpeg");
     });
@@ -181,10 +183,11 @@ class RegisterForm extends Component {
           
           validationSchema={SignupSchema}
           onSubmit={values => {
-          console.log(values.Image);
+            console.log(this.state.blobFile[0]);
             const selectedCountry = this.state.Country != null ? this.state.Country.value : null;
             const selectedCity = this.state.City != null ? this.state.City.value : null;
             const selectedTown = this.state.Town != null ? this.state.Town.value : null;
+            const Image = this.state.blobFile[0] != null ? this.state.blobFile[0] : null;
             debugger;
 
             if (!recaptchaRef.current.getValue()) {
@@ -202,7 +205,6 @@ class RegisterForm extends Component {
               return response.data.token;
             })
               .then(function (token) {
-                debugger;
                 const registerForm =
                 {
                   UserName: values.UserName,
@@ -218,9 +220,9 @@ class RegisterForm extends Component {
                   Town: selectedTown,
                   PostaCode: values.PostaCode
                 }
-                console.log(registerForm);
+
                 var bodyFormData = new FormData();
-                bodyFormData.append('Image', this.state.blobFile);
+                bodyFormData.append('Image', Image);
                 bodyFormData.append('registerForm', JSON.stringify(registerForm));
 
                 const headers = {
