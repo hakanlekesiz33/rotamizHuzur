@@ -51,7 +51,7 @@ class RegisterForm extends Component {
       width: 30,
       aspect: 1 /  1
     },
-    blobFile:'',
+    blobFile:null,
     CountryCode:null,
     City: null,
     Country: null,
@@ -130,7 +130,9 @@ class RegisterForm extends Component {
         window.URL.revokeObjectURL(this.fileUrl);
         this.fileUrl = window.URL.createObjectURL(blob);
         var file = new File([blob], "name");
-        this.setState({...this.state,blobFile:file});
+        console.log(file)
+        this.setState({...this.state ,blobFile:file});
+        console.log("hakan:"+JSON.stringify(this.state.blobFile));
         resolve(this.fileUrl);
       }, "image/jpeg");
     });
