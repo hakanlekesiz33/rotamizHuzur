@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 const axios = require('axios');
-import ReCAPTCHA from "react-google-recaptcha";
 const recaptchaRef = React.createRef();
-
+import ReCAPTCHA from "react-google-recaptcha";
 
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import MaskedInput from "react-text-mask";
-import userNameMask from '../Masks/userNameMask'
 import phoneNumberMask from '../Masks/phoneNumberMask'
 import "../../../styles/react-datepicker.scss"
 import "../../../styles/ReactCrop.scss"
@@ -16,7 +14,6 @@ import InputText from '../Inputs/InputText'
 import InputTextArea from '../Inputs/InputTextArea'
 import ReactCrop from "react-image-crop";
 import { timingSafeEqual } from 'crypto';
-
 
 import InputSelect from '../Inputs/InputSelect'
 import InputSelect2 from '../Inputs/InputSelect2'
@@ -35,7 +32,6 @@ const allTownOptions = [
 const SignupSchema = Yup.object().shape({
   UserName: Yup.string()
   .trim()
-  .matches(/^[a-zA-Z.-]+$/, 'Is not in correct format')
   .required('Required'),
   password: Yup.string()
     .required('Required'),
@@ -158,7 +154,9 @@ class RegisterForm extends Component {
   select2HandleChangeTown = Town => {
     this.setState({ ...this.state, Town: Town });
   };
-
+  onInputChange = (e, inputName, setFieldValue) => {
+    setFieldValue(inputName, e.target.value, false)
+}
   render() {
 
     const { crop, croppedImageUrl, src } = this.state;
@@ -187,11 +185,11 @@ class RegisterForm extends Component {
             const selectedTown = this.state.Town != null ? this.state.Town.value : null;
             debugger;
 
-            // if (!recaptchaRef.current.getValue()) {
-            //   console.log("recaptchaClass error");
-            //   this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
-            //   return; //recaptha dolu değilse formu submit etmeyecek
-            // }
+            if (!recaptchaRef.current.getValue()) {
+              console.log("recaptchaClass error");
+              this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
+              return; //recaptha dolu değilse formu submit etmeyecek
+            }
             const user = {
               username: "hakan",
               password: "123456"
@@ -253,6 +251,8 @@ class RegisterForm extends Component {
                   type="text"
                   placeholder="Kullanıcı Adı"
                   name="UserName"
+                  value={values.UserName}
+                  onChange={ev => this.onInputChange(ev, "UserName", setFieldValue)}
                   className={
                     errors.UserName && touched.UserName
                       ? "form-element username error"
@@ -263,6 +263,8 @@ class RegisterForm extends Component {
                   type="password"
                   placeholder="password"
                   name="password"
+                  value={values.password}
+                  onChange={ev => this.onInputChange(ev, "password", setFieldValue)}
                   className={
                     errors.password && touched.password
                       ? "form-element password error"
@@ -273,6 +275,8 @@ class RegisterForm extends Component {
                   type="text"
                   placeholder="Adınız"
                   name="Name"
+                  value={values.Name}
+                  onChange={ev => this.onInputChange(ev, "Name", setFieldValue)}
                   className={
                     errors.Name && touched.Name
                       ? "form-element name error"
@@ -283,6 +287,8 @@ class RegisterForm extends Component {
                   type="text"
                   placeholder="Soy Adınız"
                   name="SurName"
+                  value={values.SurName}
+                  onChange={ev => this.onInputChange(ev, "SurName", setFieldValue)}
                   className={
                     errors.SurName && touched.SurName
                       ? "form-element surName error"
@@ -409,6 +415,8 @@ class RegisterForm extends Component {
                   type="text"
                   placeholder="Posta Kodu"
                   name="PostaCode"
+                  value={values.PostaCode}
+                  onChange={ev => this.onInputChange(ev, "PostaCode", setFieldValue)}
                   className={
                     errors.PostaCode && touched.PostaCode
                       ? "form-element postaCode error"

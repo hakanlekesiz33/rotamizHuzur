@@ -28,8 +28,6 @@ class LoginForm extends Component {
 
   onInputChange = (e,inputName, setFieldValue) => {
     let inputValue=e.target.value;
-    console.log(/^[-]*$/.test(inputValue.slice(-1)));
-    console.log(/^[0-9a-zA-Z]*$/.test(inputValue.slice(-1)));
     if(!(/^[-]*$/.test(inputValue.slice(-1)) || /^[0-9a-zA-Z]*$/.test(inputValue.slice(-1)))){
       inputValue = inputValue.replace(/.$/,'')
     }
@@ -57,11 +55,11 @@ class LoginForm extends Component {
               console.log(response);
             })
 
-            // if (!recaptchaRef.current.getValue()) {
-            //   console.log("recaptchaClass error");
-            //   this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
-            //   return; //recaptha dolu değilse formu submit etmeyecek
-            // }
+            if (!recaptchaRef.current.getValue()) {
+              console.log("recaptchaClass error");
+              this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
+              return; //recaptha dolu değilse formu submit etmeyecek
+            }
 
           }}
         >
