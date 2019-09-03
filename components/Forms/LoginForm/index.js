@@ -28,8 +28,6 @@ class LoginForm extends Component {
 
   onInputChange = (e,inputName, setFieldValue) => {
     let inputValue=e.target.value;
-    console.log(/^[-]*$/.test(inputValue.slice(-1)));
-    console.log(/^[0-9a-zA-Z]*$/.test(inputValue.slice(-1)));
     if(!(/^[-]*$/.test(inputValue.slice(-1)) || /^[0-9a-zA-Z]*$/.test(inputValue.slice(-1)))){
       inputValue = inputValue.replace(/.$/,'')
     }
@@ -52,19 +50,22 @@ class LoginForm extends Component {
               username: values.username,
               password: values.password
             }
-            axios.post('https://localhost:44302/api/auth/login', user
+            axios.post('http://reprep.api.feux.digital/api/auth/login', user
             ).then(function (response) {
               
               localStorage.setItem('rtmToken',JSON.stringify(response.data))
 
               console.log(JSON.parse(localStorage.getItem('rtmToken')).expiresDate)
+              console.log(response)
+                const token = response.data.tokenString;
+                alert(response.data.status)
             })
 
-            // if (!recaptchaRef.current.getValue()) {
-            //   console.log("recaptchaClass error");
-            //   this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
-            //   return; //recaptha dolu değilse formu submit etmeyecek
-            // }
+            if (!recaptchaRef.current.getValue()) {
+              console.log("recaptchaClass error");
+              this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
+              return; //recaptha dolu değilse formu submit etmeyecek
+            }
 
           }}
         >

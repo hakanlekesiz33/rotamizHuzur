@@ -13,7 +13,7 @@ const SignupSchema = Yup.object().shape({
         .required('Required'),
     password: Yup.string().required('Parola Gerekli'),
     passwordConfirmation: Yup.string()
-        .oneOf([Yup.ref('password'), null], 'Paraolalar eşleşmiyor')
+        .oneOf([Yup.ref('password'), null], 'Parolalar eşleşmiyor')
 });
 
 class ResetForm extends Component {
@@ -27,19 +27,22 @@ class ResetForm extends Component {
         }
     }
 
-    onRefreshPassword =async (values) => {
+    onRefreshPassword = async (values) => {
 
         debugger;
         const form = {
-            code:values.code,
-            newPassword:values.password
+            code: values.code,
+            newPassword: values.password
         }
-        let res = await axios.post('https://localhost:44302/api/auth/confirmPassword', form)
+        let res = await axios.post('http://reprep.api.feux.digital/api/auth/confirmPassword', form)
         console.log(res.data);
- 
-         debugger;
-         
-     }
+
+        debugger;
+
+    }
+    onInputChange = (e, inputName, setFieldValue) => {
+        setFieldValue(inputName, e.target.value, false)
+    }
     render() {
 
         return (
@@ -48,21 +51,21 @@ class ResetForm extends Component {
                     initialValues={{
                         password: '',
                         passwordConfirmation: '',
-                        code:''
+                        code: ''
 
                     }}
                     validationSchema={SignupSchema}
-                    onSubmit={values =>  {
+                    onSubmit={values => {
 
                         console.log(values);
 
-                        // if (!recaptchaRef.current.getValue()) {
-                        //     console.log("recaptchaClass error");
-                        //     this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
-                        //     return; //recaptha dolu değilse formu submit etmeyecek
-                        // }
+                        if (!recaptchaRef.current.getValue()) {
+                            console.log("recaptchaClass error");
+                            this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
+                            return; //recaptha dolu değilse formu submit etmeyecek
+                        }
                         this.onRefreshPassword(values)
-                        
+
 
                     }}
                 >
@@ -75,6 +78,8 @@ class ResetForm extends Component {
                                     type="password"
                                     placeholder="password"
                                     name="password"
+                                    value={values.password}
+                                    onChange={ev => this.onInputChange(ev, "password", setFieldValue)}
                                     className={
                                         errors.password && touched.password
                                             ? "form-element password error"
@@ -85,6 +90,8 @@ class ResetForm extends Component {
                                     type="password"
                                     placeholder="tekrar parola"
                                     name="passwordConfirmation"
+                                    value={values.passwordConfirmation}
+                                    onChange={ev => this.onInputChange(ev, "passwordConfirmation", setFieldValue)}
                                     className={
                                         errors.passwordConfirmation && touched.passwordConfirmation
                                             ? "form-element passwordConfirmation error"
@@ -95,6 +102,8 @@ class ResetForm extends Component {
                                     type="text"
                                     placeholder="Kod"
                                     name="code"
+                                    value={values.password}
+                                    onChange={ev => this.onInputChange(ev, "code", setFieldValue)}
                                     className={
                                         errors.code && touched.code
                                             ? "form-element code error"

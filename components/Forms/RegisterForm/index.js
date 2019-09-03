@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 const axios = require('axios');
-import ReCAPTCHA from "react-google-recaptcha";
 const recaptchaRef = React.createRef();
-
+import ReCAPTCHA from "react-google-recaptcha";
 
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
 import MaskedInput from "react-text-mask";
-import userNameMask from '../Masks/userNameMask'
 import phoneNumberMask from '../Masks/phoneNumberMask'
 import "../../../styles/react-datepicker.scss"
 import "../../../styles/ReactCrop.scss"
@@ -16,7 +14,6 @@ import InputText from '../Inputs/InputText'
 import InputTextArea from '../Inputs/InputTextArea'
 import ReactCrop from "react-image-crop";
 import { timingSafeEqual } from 'crypto';
-
 
 import InputSelect from '../Inputs/InputSelect'
 import InputSelect2 from '../Inputs/InputSelect2'
@@ -34,9 +31,11 @@ const allTownOptions = [
 
 const SignupSchema = Yup.object().shape({
   UserName: Yup.string()
-  .trim()
-  .matches(/^[a-zA-Z.-]+$/, 'Is not in correct format')
-  .required('Required'),
+    .trim()
+    .required('Required'),
+    email: Yup.string()
+    .email('Invalid email')
+    .required('Required'),
   password: Yup.string()
     .required('Required'),
   Gender: Yup.string().required("Zorunlu Alan"),
@@ -49,10 +48,10 @@ class RegisterForm extends Component {
     crop: {
       unit: "%",
       width: 30,
-      aspect: 1 /  1
+      aspect: 1 / 1
     },
-    blobFile:[],
-    CountryCode:null,
+    blobFile: [],
+    CountryCode: null,
     City: null,
     Country: null,
     Town: null,
@@ -60,7 +59,7 @@ class RegisterForm extends Component {
     townDisabled: true
   };
 
-  
+
   onSelectFile = e => {
     if (e.target.files && e.target.files.length > 0) {
       const reader = new FileReader();
@@ -78,7 +77,7 @@ class RegisterForm extends Component {
 
   onCropComplete = crop => {
     this.makeClientCrop(crop);
-   
+
   };
 
   onCropChange = (crop, percentCrop) => {
@@ -122,19 +121,15 @@ class RegisterForm extends Component {
     return new Promise((resolve, reject) => {
       canvas.toBlob(blob => {
         if (!blob) {
-          //reject(new Error('Canvas is empty'));
-          console.error("Canvas is empty");
           return;
         }
         blob.name = fileName;
         window.URL.revokeObjectURL(this.fileUrl);
         this.fileUrl = window.URL.createObjectURL(blob);
         var files = [];
-        var file = new File([blob], "name");
+        var file = new File([blob], "name.jpg");
         files.push(file);
-        console.log(file)
-        this.setState({...this.state ,blobFile:files});
-        console.log(this.state.blobFile[0]);
+        this.setState({ ...this.state, blobFile: files });
         resolve(this.fileUrl);
       }, "image/jpeg");
     });
@@ -163,6 +158,9 @@ class RegisterForm extends Component {
     this.setState({ ...this.state, Town: Town });
   };
 
+  onInputChange = (e, inputName, setFieldValue) => {
+    setFieldValue(inputName, e.target.value, false)
+  }
   render() {
 
     const { crop, croppedImageUrl, src } = this.state;
@@ -180,9 +178,10 @@ class RegisterForm extends Component {
             BirthDate: new Date(),
             Address: '',
             PostaCode: '',
-            Image:''
+            Image: '',
+            email: ''
           }}
-          
+
           validationSchema={SignupSchema}
           onSubmit={values => {
             console.log(this.state.blobFile[0]);
@@ -192,17 +191,17 @@ class RegisterForm extends Component {
             const Image = this.state.blobFile[0] != null ? this.state.blobFile[0] : null;
             debugger;
 
-            // if (!recaptchaRef.current.getValue()) {
-            //   console.log("recaptchaClass error");
-            //   this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
-            //   return; //recaptha dolu değilse formu submit etmeyecek
-            // }
+            if (!recaptchaRef.current.getValue()) {
+              console.log("recaptchaClass error");
+              this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
+              return; //recaptha dolu değilse formu submit etmeyecek
+            }
             const user = {
               username: "hakan",
               password: "123456"
             }
 
-            axios.post('https://localhost:44302/api/token/token', user
+            axios.post('http://reprep.api.feux.digital/api/token/token', user
             ).then(function (response) {
               return response.data;
             })
@@ -211,6 +210,7 @@ class RegisterForm extends Component {
                 {
                   UserName: values.UserName,
                   password: values.password,
+                  Email: values.email,
                   Name: values.Name,
                   SurName: values.SurName,
                   Phone: values.Phone,
@@ -231,24 +231,11 @@ class RegisterForm extends Component {
                   'Content-Type': 'multipart/form-data',
                   'Authorization': 'bearer ' + data.token
                 }
-                axios.post('https://localhost:44302/api/Auth/register', bodyFormData, {
+                axios.post('http://reprep.api.feux.digital/api/Auth/register', bodyFormData, {
                   headers: headers
 
                 }).then(function (res) {
-                  // console.log(res)
-                  // const tkn = {
-                  //   token :data.token,
-                  //   lastRequestTime: data.expiresDate
-                   
-                  // }
-                  // if(tkn.lastRequestTime >(Date.now()).toString()){
-                  //   console.log("büyük")
-                  // }else{
-                  //   console.log("kücük")
-                    
-                  // }
-                  // console.log(tkn)
-                  // localStorage.setItem('rtmToken',JSON.stringify(tkn))
+                  alert(res.data.status)
                 })
               })
               .catch(function (error) {
@@ -265,11 +252,24 @@ class RegisterForm extends Component {
             setFieldValue,
             setFieldTouched }) => (
               <Form encType="multipart/form-data">
-
+                <InputText
+                  type="text"
+                  placeholder="Email Adresi"
+                  name="email"
+                  value={values.email}
+                  onChange={ev => this.onInputChange(ev, "email", setFieldValue)}
+                  className={
+                    errors.email && touched.email
+                      ? "form-control error"
+                      : "form-control"
+                  }
+                />
                 <InputText
                   type="text"
                   placeholder="Kullanıcı Adı"
                   name="UserName"
+                  value={values.UserName}
+                  onChange={ev => this.onInputChange(ev, "UserName", setFieldValue)}
                   className={
                     errors.UserName && touched.UserName
                       ? "form-element username error"
@@ -280,6 +280,8 @@ class RegisterForm extends Component {
                   type="password"
                   placeholder="password"
                   name="password"
+                  value={values.password}
+                  onChange={ev => this.onInputChange(ev, "password", setFieldValue)}
                   className={
                     errors.password && touched.password
                       ? "form-element password error"
@@ -290,6 +292,8 @@ class RegisterForm extends Component {
                   type="text"
                   placeholder="Adınız"
                   name="Name"
+                  value={values.Name}
+                  onChange={ev => this.onInputChange(ev, "Name", setFieldValue)}
                   className={
                     errors.Name && touched.Name
                       ? "form-element name error"
@@ -300,6 +304,8 @@ class RegisterForm extends Component {
                   type="text"
                   placeholder="Soy Adınız"
                   name="SurName"
+                  value={values.SurName}
+                  onChange={ev => this.onInputChange(ev, "SurName", setFieldValue)}
                   className={
                     errors.SurName && touched.SurName
                       ? "form-element surName error"
@@ -426,6 +432,8 @@ class RegisterForm extends Component {
                   type="text"
                   placeholder="Posta Kodu"
                   name="PostaCode"
+                  value={values.PostaCode}
+                  onChange={ev => this.onInputChange(ev, "PostaCode", setFieldValue)}
                   className={
                     errors.PostaCode && touched.PostaCode
                       ? "form-element postaCode error"
@@ -435,20 +443,21 @@ class RegisterForm extends Component {
 
                 <label>Profil Resmi Yükleyiniz</label>
                 <div>
-          <input type="file" onChange={this.onSelectFile} />
-        </div>
-        {src && (
-          <ReactCrop
-            src={src}
-            crop={crop}
-            onImageLoaded={this.onImageLoaded}
-            onComplete={this.onCropComplete}
-            onChange={this.onCropChange}
-          />
-        )}
-        {croppedImageUrl && (
-          <img alt="Crop" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
-        )}
+                  <input type="file" onChange={this.onSelectFile} />
+                </div>
+
+                {src && (
+                  <ReactCrop
+                    src={src}
+                    crop={crop}
+                    onImageLoaded={this.onImageLoaded}
+                    onComplete={this.onCropComplete}
+                    onChange={this.onCropChange}
+                  />
+                )}
+                {croppedImageUrl && (
+                  <img alt="Crop" style={{ maxWidth: "100%" }} src={croppedImageUrl} />
+                )}
 
                 <div className={this.state.recaptchaClass}>
                   <ReCAPTCHA

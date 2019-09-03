@@ -4,38 +4,8 @@ import * as Yup from 'yup';
 import ReCAPTCHA from "react-google-recaptcha";
 const axios = require('axios');
 const recaptchaRef = React.createRef();
-import MaskedInput from "react-text-mask";
-import Thumb from '../../Thumb';//input file resim seçildikten input yanında göstermek için kullanacaz
 import InputText from '../Inputs/InputText'
-import InputSelect from '../Inputs/InputSelect'
 import InputTextArea from '../Inputs/InputTextArea'
-import CheckBox from '../Inputs/CheckBox'
-import CheckBoxesGroup from '../Inputs/CheckBoxesGroup'
-import RadioButtonsGroup from '../Inputs/RadioButtonsGroup'
-
-
-const phoneNumberMask = [
-  "(",
-  "+",
-  "9",
-  "0",
-  ")",
-  " ",
-  "(",
-  /[1-9]/,
-  /\d/,
-  /\d/,
-  ")",
-  " ",
-  /\d/,
-  /\d/,
-  /\d/,
-  "-",
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/
-];
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -62,6 +32,9 @@ class ContactForm extends Component {
     if (values) {
       this.setState({ ...this.state, recaptchaClass: "recaptchaClass" });
     }
+  }
+  onInputChange = (e, inputName, setFieldValue) => {
+    setFieldValue(inputName, e.target.value, false)
   }
   render() {
 
@@ -90,7 +63,7 @@ class ContactForm extends Component {
               password: "123456"
             }
 
-            axios.post('https://localhost:44302/api/token/token', user
+            axios.post('http://reprep.api.feux.digital/api/token/token', user
             ).then(function (response) {
               return response.data.token;
             })
@@ -109,7 +82,7 @@ class ContactForm extends Component {
                   'Content-Type': 'multipart/form-data',
                   'Authorization': 'bearer ' + token
                 }
-                axios.post('https://localhost:44302/api/values/upload', bodyFormData, {
+                axios.post('http://reprep.api.feux.digital/api/values/upload', bodyFormData, {
                   headers: headers
 
                 }).then(function (res) {
@@ -129,6 +102,8 @@ class ContactForm extends Component {
                   type="text"
                   placeholder="Adınız"
                   name="name"
+                  value={values.name}
+                  onChange={ev => this.onInputChange(ev, "name", setFieldValue)}
                   className={
                     errors.name && touched.name
                       ? "form-control error"
@@ -139,11 +114,20 @@ class ContactForm extends Component {
                   type="text"
                   placeholder="Email Adresi"
                   name="email"
+                  value={values.email}
+                  onChange={ev => this.onInputChange(ev, "email", setFieldValue)}
                   className={
                     errors.email && touched.email
                       ? "form-control error"
                       : "form-control"
                   }
+                />
+                <InputTextArea
+                  id="message"
+                  name="message"
+                  className="form-control-lg"
+                  rows="5"
+                  placeholder="Mesajınız"
                 />
 
                 {/* <h2>Single checkbox</h2>
@@ -189,13 +173,7 @@ class ContactForm extends Component {
                   ]}
                 /> */}
 
-                <InputTextArea
-                  id="message"
-                  name="message"
-                  className="form-control-lg"
-                  rows="5"
-                  placeholder="Mesajınız"
-                />
+
 
                 {/* <label>Dosya Yükleyiniz</label>
                 <input id="file" name="file" type="file" onChange={(event) => {

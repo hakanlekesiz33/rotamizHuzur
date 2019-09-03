@@ -26,18 +26,23 @@ class ForgotPassword extends Component {
         }
     }
 
-    onResetPassword =async (values) => {
+    onResetPassword = async (values) => {
 
-       let res = await axios.post('https://localhost:44302/api/auth/resetPassword', values)
-       console.log(res.data);
+        let res = await axios.post('http://reprep.api.feux.digital/api/auth/resetPassword', values)
+        console.log(res.data);
 
         debugger;
-        if(res.data){
+        if (res.data) {
             this.setState({ ...this.state, infoPassForget: true });
         }
     }
+
+    onInputChange = (e, inputName, setFieldValue) => {
+        setFieldValue(inputName, e.target.value, false)
+    }
+
     render() {
-        const isInfo = this.state.infoPassForget 
+        const isInfo = this.state.infoPassForget
 
         return (
             <>
@@ -48,12 +53,11 @@ class ForgotPassword extends Component {
                     validationSchema={SignupSchema}
                     onSubmit={values => {
 
-
-                        // if (!recaptchaRef.current.getValue()) {
-                        //     console.log("recaptchaClass error");
-                        //     this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
-                        //     return; //recaptha dolu değilse formu submit etmeyecek
-                        // }
+                        if (!recaptchaRef.current.getValue()) {
+                            console.log("recaptchaClass error");
+                            this.setState({ ...this.state, recaptchaClass: "recaptchaClass error" });
+                            return; //recaptha dolu değilse formu submit etmeyecek
+                        }
 
                         this.onResetPassword(values)
 
@@ -68,6 +72,8 @@ class ForgotPassword extends Component {
                                     type="text"
                                     placeholder="Email Adresini Giriniz"
                                     name="email"
+                                    value={values.email}
+                                    onChange={ev => this.onInputChange(ev, "email", setFieldValue)}
                                     className={
                                         errors.email && touched.email
                                             ? "form-element email error"
@@ -83,11 +89,11 @@ class ForgotPassword extends Component {
                                 </div>
                                 {isInfo ? (
                                     <Link href="/passwordReset">
-                                    <a>Şifre sıfırlama parolası email adresinize gönderilmiştir</a>
-                                  </Link>
-      ) : (
-       null
-      )}
+                                        <a>Şifre sıfırlama parolası email adresinize gönderilmiştir</a>
+                                    </Link>
+                                ) : (
+                                        null
+                                    )}
                                 <button type="submit" className="btn-submit">Gönder</button>
                             </Form>
                         )}
