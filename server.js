@@ -25,6 +25,12 @@ app.prepare()
       const actualPage = "/login";
       app.render(req, res, actualPage)
     })
+
+    server.get("/sifremi-unuttum", (req, res) => {
+      const actualPage = "/forgetPassword";
+      app.render(req, res, actualPage)
+    })
+
     server.get('/:slug', (req, res) => {
       return app.render(req, res, '/blog', { slug: req.params.slug })
     })

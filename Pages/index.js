@@ -27,6 +27,10 @@ class Index extends Component {
       <>
         <Head>
           <title>Rotamız Huzur | Ana Sayfa</title>
+          <link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css"
+  />
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css"
+  />
           {/* <meta name="description" content="ana sayfa"></meta> */}
           {/* <meta name="keywords" content="rotamız huzur, gezi yazıları, gezelim görelim, en iyi gezi deneyimleri"></meta> */}
         </Head>

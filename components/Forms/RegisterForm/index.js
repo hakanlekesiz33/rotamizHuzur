@@ -204,9 +204,9 @@ class RegisterForm extends Component {
 
             axios.post('https://localhost:44302/api/token/token', user
             ).then(function (response) {
-              return response.data.token;
+              return response.data;
             })
-              .then(function (token) {
+              .then(function (data) {
                 const registerForm =
                 {
                   UserName: values.UserName,
@@ -229,13 +229,26 @@ class RegisterForm extends Component {
 
                 const headers = {
                   'Content-Type': 'multipart/form-data',
-                  'Authorization': 'bearer ' + token
+                  'Authorization': 'bearer ' + data.token
                 }
                 axios.post('https://localhost:44302/api/Auth/register', bodyFormData, {
                   headers: headers
 
                 }).then(function (res) {
-                  console.log(res)
+                  // console.log(res)
+                  // const tkn = {
+                  //   token :data.token,
+                  //   lastRequestTime: data.expiresDate
+                   
+                  // }
+                  // if(tkn.lastRequestTime >(Date.now()).toString()){
+                  //   console.log("büyük")
+                  // }else{
+                  //   console.log("kücük")
+                    
+                  // }
+                  // console.log(tkn)
+                  // localStorage.setItem('rtmToken',JSON.stringify(tkn))
                 })
               })
               .catch(function (error) {

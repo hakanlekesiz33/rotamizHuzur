@@ -54,7 +54,10 @@ class LoginForm extends Component {
             }
             axios.post('https://localhost:44302/api/auth/login', user
             ).then(function (response) {
-              console.log(response);
+              
+              localStorage.setItem('rtmToken',JSON.stringify(response.data))
+
+              console.log(JSON.parse(localStorage.getItem('rtmToken')).expiresDate)
             })
 
             // if (!recaptchaRef.current.getValue()) {
@@ -93,7 +96,7 @@ class LoginForm extends Component {
                       : "form-element password"
                   }
                 />
-                <Link href="/forgetPassword">
+                <Link href="/sifremi-unuttum">
                   <a>Şifremi unuttum</a>
                 </Link>
 
