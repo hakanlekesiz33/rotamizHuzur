@@ -17,7 +17,7 @@
     "express": "^4.17.1",
     "formik": "^1.5.8",
     "html-to-react": "^1.4.1",
-    "next": "^9.0.2",
+    "next": "^9.3.2",
     "next-compose-plugins": "^2.2.0",
     "next-images": "^1.1.2",
     "next-redux-wrapper": "^3.0.0-alpha.1",
